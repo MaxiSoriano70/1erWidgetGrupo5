@@ -10,113 +10,133 @@ class BingoCard extends StatefulWidget {
 class _BingoCardState extends State<BingoCard> {
   @override
   Widget build(BuildContext context) {
-    return _bingoCard(100);
+    return _bingoCard(/*200*/);
   }
 
-  Widget _bingoCard(double _width) {
+  Widget _bingoCard(/*double _width*/) {
     return Material(
       elevation: 25,
-      child: Container(
-        width: _width,
-        height: _width * 0.6364,
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(25),
-          color: Colors.grey,
-        ),
-        child: Row(
-            children: [
-            _GridViewLetter(),
-            _GridViewNumber()
-        ],
-      ),
-    ),
-    );
-  }
-
-  Widget _cardLetter(String letter, Color colorBackground, Color colorText) {
-    return Container(
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(20),
-        color: colorBackground,
-      ),
-      child: Center(
-        child: Text(letter, style: TextStyle(color: colorText, fontSize: 15),),
-      ),
-    );
-  }
-
-  Widget _ButtonNumber(String number,Color colorBackground, Color colorText){
-    return InkWell(
-      child: Container(
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(20),
-          color: colorBackground,
-        ),
-        child: Center(
-          child: Text(number, style: TextStyle(color: colorText, fontSize: 15),),
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(25),
+        child: Container(
+          width: MediaQuery.of(context).size.width,
+          height: MediaQuery.of(context).size.width*0.6364,
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(25),
+            color: Colors.grey,
+          ),
+          child: Row(
+              children: [
+                Container(
+                  width: 72,
+                  height: MediaQuery.of(context).size.width*0.6364,
+                  child: _GridViewLetter(),
+                ),
+                Container(
+                  width: MediaQuery.of(context).size.width-72,
+                  height: MediaQuery.of(context).size.width*0.6364,
+                  color: Colors.brown,
+                  child: _GridViewNumber(),)
+            ],
+          ),
         ),
       ),
     );
   }
 
   Widget _GridViewLetter() {
-    return GridView.count(
-      crossAxisCount: 1,
-      mainAxisSpacing: 10.0,
-      crossAxisSpacing: 5.0,
-      reverse: false,
+    return GridView(
+      padding: const EdgeInsets.symmetric(horizontal: 10,vertical: 5),
+      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+        crossAxisCount: 1,
+        mainAxisSpacing: 10,
+        crossAxisSpacing: 10
+      ),
       children: [
-        _cardLetter("b", Colors.green, Colors.white),
-        _cardLetter("i", Colors.green, Colors.white),
-        _cardLetter("n", Colors.green, Colors.white),
-        _cardLetter("g", Colors.green, Colors.white),
-        _cardLetter("o", Colors.green, Colors.white),
+        _cardLetter("B", Colors.green, Colors.white),
+        _cardLetter("I", Colors.green, Colors.white),
+        _cardLetter("N", Colors.green, Colors.white),
+        _cardLetter("G", Colors.green, Colors.white),
+        _cardLetter("O", Colors.green, Colors.white),
       ],
     );
   }
 
+  Widget _cardLetter(String letter, Color colorBackground, Color colorText) {
+    return Container(
+      width: 15,
+      height: 15,
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(20),
+        color: colorBackground,
+      ),
+      child: Center(
+        child: Text(letter, style: TextStyle(color: colorText, fontSize: 25),),
+      ),
+    );
+  }
+
+  Widget _ButtonNumber(String number,Color colorBackground, Color colorText){
+    return InkWell(
+      onTap: (){},
+      child: Container(
+        width: 15,
+        height: 15,
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(20),
+          color: colorBackground,
+        ),
+        child: Center(
+          child: Text(number, style: TextStyle(color: colorText, fontSize: 25),),
+        ),
+      ),
+    );
+  }
+
   Widget _GridViewNumber(){
-    return GridView.count(
-      crossAxisCount: 7,
-      mainAxisSpacing: 10.0,
-      crossAxisSpacing: 5.0,
-      reverse: false,
+    return GridView(
+      padding: const EdgeInsets.symmetric(horizontal: 10,vertical: 5),
+      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+          crossAxisCount: 7,
+          mainAxisSpacing: 10,
+          crossAxisSpacing: 10
+      ),
       children: [
-        _cardLetter("1", Colors.green, Colors.white),
-        _cardLetter("2", Colors.green, Colors.white),
-        _cardLetter("3", Colors.green, Colors.white),
-        _cardLetter("4", Colors.green, Colors.white),
-        _cardLetter("5", Colors.green, Colors.white),
-        _cardLetter("1", Colors.green, Colors.white),
-        _cardLetter("2", Colors.green, Colors.white),
-        _cardLetter("3", Colors.green, Colors.white),
-        _cardLetter("4", Colors.green, Colors.white),
-        _cardLetter("5", Colors.green, Colors.white),
-        _cardLetter("1", Colors.green, Colors.white),
-        _cardLetter("2", Colors.green, Colors.white),
-        _cardLetter("3", Colors.green, Colors.white),
-        _cardLetter("4", Colors.green, Colors.white),
-        _cardLetter("5", Colors.green, Colors.white),
-        _cardLetter("1", Colors.green, Colors.white),
-        _cardLetter("2", Colors.green, Colors.white),
-        _cardLetter("3", Colors.green, Colors.white),
-        _cardLetter("4", Colors.green, Colors.white),
-        _cardLetter("5", Colors.green, Colors.white),
-        _cardLetter("1", Colors.green, Colors.white),
-        _cardLetter("2", Colors.green, Colors.white),
-        _cardLetter("3", Colors.green, Colors.white),
-        _cardLetter("4", Colors.green, Colors.white),
-        _cardLetter("5", Colors.green, Colors.white),
-        _cardLetter("1", Colors.green, Colors.white),
-        _cardLetter("2", Colors.green, Colors.white),
-        _cardLetter("3", Colors.green, Colors.white),
-        _cardLetter("4", Colors.green, Colors.white),
-        _cardLetter("5", Colors.green, Colors.white),
-        _cardLetter("1", Colors.green, Colors.white),
-        _cardLetter("2", Colors.green, Colors.white),
-        _cardLetter("3", Colors.green, Colors.white),
-        _cardLetter("4", Colors.green, Colors.white),
-        _cardLetter("5", Colors.green, Colors.white),
+        _ButtonNumber("1", Colors.green, Colors.white),
+        _ButtonNumber("2", Colors.green, Colors.white),
+        _ButtonNumber("3", Colors.green, Colors.white),
+        _ButtonNumber("4", Colors.green, Colors.white),
+        _ButtonNumber("5", Colors.green, Colors.white),
+        _ButtonNumber("1", Colors.green, Colors.white),
+        _ButtonNumber("2", Colors.green, Colors.white),
+        _ButtonNumber("3", Colors.green, Colors.white),
+        _ButtonNumber("4", Colors.green, Colors.white),
+        _ButtonNumber("5", Colors.green, Colors.white),
+        _ButtonNumber("1", Colors.green, Colors.white),
+        _ButtonNumber("2", Colors.green, Colors.white),
+        _ButtonNumber("3", Colors.green, Colors.white),
+        _ButtonNumber("4", Colors.green, Colors.white),
+        _ButtonNumber("5", Colors.green, Colors.white),
+        _ButtonNumber("1", Colors.green, Colors.white),
+        _ButtonNumber("2", Colors.green, Colors.white),
+        _ButtonNumber("3", Colors.green, Colors.white),
+        _ButtonNumber("4", Colors.green, Colors.white),
+        _ButtonNumber("5", Colors.green, Colors.white),
+        _ButtonNumber("1", Colors.green, Colors.white),
+        _ButtonNumber("2", Colors.green, Colors.white),
+        _ButtonNumber("3", Colors.green, Colors.white),
+        _ButtonNumber("4", Colors.green, Colors.white),
+        _ButtonNumber("5", Colors.green, Colors.white),
+        _ButtonNumber("1", Colors.green, Colors.white),
+        _ButtonNumber("2", Colors.green, Colors.white),
+        _ButtonNumber("3", Colors.green, Colors.white),
+        _ButtonNumber("4", Colors.green, Colors.white),
+        _ButtonNumber("5", Colors.green, Colors.white),
+        _ButtonNumber("1", Colors.green, Colors.white),
+        _ButtonNumber("2", Colors.green, Colors.white),
+        _ButtonNumber("3", Colors.green, Colors.white),
+        _ButtonNumber("4", Colors.green, Colors.white),
+        _ButtonNumber("5", Colors.green, Colors.white),
       ],
     );
   }
