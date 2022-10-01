@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 class BingoCard extends StatefulWidget {
@@ -14,191 +15,121 @@ class _BingoCardState extends State<BingoCard> {
   }
 
   Widget _bingoCard(double _width) {
+    List<String> listaDeNumeros=["1","2","3","4","5","6","7",
+      "9","10","11","12","13","14","15",
+      "1","2","3","4","5","6","7",
+      "1","2","3","4","5","6","7",
+      "1","2","3","4","5","6","7",];
+
+    List<String> listWithLetters(List<String> list){
+      List<String> listwithBingo=[];
+      int i=0;
+      int posicion=0;
+      while(i<40){
+        if(i==0){
+          listwithBingo.add("B");
+          i++;
+        }
+        else if(i==8){
+          listwithBingo.add("I");
+          i++;
+        }
+        else if(i==16){
+          listwithBingo.add("N");
+          i++;
+        }
+        else if(i==24){
+          listwithBingo.add("G");
+          i++;
+        }
+        else if(i==32){
+          listwithBingo.add("O");
+          i++;
+        }
+        else{
+          listwithBingo.add(list[posicion]);
+          i++;
+          posicion++;
+        }
+      }
+      return listwithBingo;
+    }
+    List<String> listwithBingo=[];
+    listwithBingo=listWithLetters(listaDeNumeros);
+
     return Material(
-      elevation: 25,
-      child: ClipRRect(
-        borderRadius: BorderRadius.circular(25),
-        child: Container(
-          width: _width,
-          height:_width*0.6364,
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(25),
-            color: Colors.grey,
+        elevation: 25,
+        child: ClipRRect(
+          borderRadius: BorderRadius.circular(20),
+          child: Container(
+            width: _width,
+            height: _width*0.64,
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(20),
+              color: Colors.grey,
+            ),
+            child: GridView.builder(
+              padding: EdgeInsets.all(_width*0.072/2),
+              itemCount: listwithBingo.length,
+              physics: const NeverScrollableScrollPhysics(),
+              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: 8,
+                crossAxisSpacing: (_width*0.072/2),
+                mainAxisSpacing: _width*0.072/2
+              ),
+              itemBuilder: (context, index){
+                return _LetterOrNumber(context,index,_width,listwithBingo[index]);
+              },
+            ),
           ),
-          child: Row(
-              children: [
-                Container(
-                  width: _width/8 + _width*0.072,
-                  height:_width*0.64,
-                  child: _GridViewLetter(_width),
-                ),
-                Container(
-                  width: _width-(_width/8 + _width*0.072),
-                  height: _width*0.64,
-                  color: Colors.brown,
-                  child: _GridViewNumber(_width),)
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-_GridViewLetter(double _width)
-{
-  return GridView.count(
-    primary: false,
-    crossAxisCount: 1,
-    padding: EdgeInsets.all((_width*0.072)/2),
-    crossAxisSpacing: (_width*0.072)/2,
-    mainAxisSpacing: (_width*0.072)/2,
-    children: [
-      _cardLetter("B", Colors.green, Colors.white,_width),
-      _cardLetter("I", Colors.green, Colors.white,_width),
-      _cardLetter("N", Colors.green, Colors.white,_width),
-      _cardLetter("G", Colors.green, Colors.white,_width),
-      _cardLetter("O", Colors.green, Colors.white,_width),
-    ],
-  );
-}
- /* Widget _GridViewLetter(double _width) {
-    return GridView.count(
-      padding: const EdgeInsets.symmetric(horizontal: 10,vertical: 5),
-      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-        crossAxisCount: 1,
-        mainAxisSpacing: _width*0.072,
-        crossAxisSpacing: _width*0.072,
-      ),
-      children: [
-        _cardLetter("B", Colors.green, Colors.white,_width),
-        _cardLetter("I", Colors.green, Colors.white,_width),
-        _cardLetter("N", Colors.green, Colors.white,_width),
-        _cardLetter("G", Colors.green, Colors.white,_width),
-        _cardLetter("O", Colors.green, Colors.white,_width),
-      ],
-    );
-  }*/
-
-  Widget _cardLetter(String letter, Color colorBackground, Color colorText, double _width) {
-    return Container(
-      width: _width*0.072,
-      height: _width*0.072,
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(10),
-        color: colorBackground,
-      ),
-      child: Center(
-        child: Text(letter, style: TextStyle(color: colorText, fontSize: _width*0.036),),
-      ),
-    );
+        ));
   }
 
-  Widget _ButtonNumber(String number,Color colorBackground, Color colorText, double _width){
+  Widget _LetterOrNumber(context, index,double _width, String text){
+    if(index==0 || index==8 || index==16 || index==24 || index==32){
+      return _cardLetter(context, index,_width,text);
+    }
+    else {
+      return _buttonNumber(context, index,_width,text);
+    }
+  }
+
+  Widget _cardLetter(context, index, double _width, String letter/*, Color colorBackground, Color colorText*/) {
     return InkWell(
       onTap: (){},
       child: Container(
         width: _width*0.072,
         height: _width*0.072,
         decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(10),
-          color: colorBackground,
+          borderRadius: BorderRadius.circular(15),
+          color: Colors.green,
         ),
         child: Center(
-          child: Text(number, style: TextStyle(color: colorText, fontSize: _width*0.036),),
+          child: Text(letter, style: TextStyle(color: Colors.white, fontSize: _width*0.036),),
         ),
       ),
     );
   }
-Widget _GridViewNumber(double _width){
-    return GridView.count(
-      primary: false,
-      crossAxisCount: 7,
-      padding: EdgeInsets.only(right: _width*0.072, top: _width*0.072, bottom: _width*0.072),
-      crossAxisSpacing: (_width*0.072)/2,
-      mainAxisSpacing: (_width*0.072)/2,
-      children: [
-        _ButtonNumber("1", Colors.green, Colors.white,_width),
-        _ButtonNumber("2", Colors.green, Colors.white,_width),
-        _ButtonNumber("3", Colors.green, Colors.white,_width),
-        _ButtonNumber("4", Colors.green, Colors.white,_width),
-        _ButtonNumber("5", Colors.green, Colors.white,_width),
-        _ButtonNumber("1", Colors.green, Colors.white,_width),
-        _ButtonNumber("2", Colors.green, Colors.white,_width),
-        _ButtonNumber("3", Colors.green, Colors.white,_width),
-        _ButtonNumber("4", Colors.green, Colors.white,_width),
-        _ButtonNumber("5", Colors.green, Colors.white,_width),
-        _ButtonNumber("1", Colors.green, Colors.white,_width),
-        _ButtonNumber("2", Colors.green, Colors.white,_width),
-        _ButtonNumber("3", Colors.green, Colors.white,_width),
-        _ButtonNumber("4", Colors.green, Colors.white,_width),
-        _ButtonNumber("5", Colors.green, Colors.white,_width),
-        _ButtonNumber("1", Colors.green, Colors.white,_width),
-        _ButtonNumber("2", Colors.green, Colors.white,_width),
-        _ButtonNumber("3", Colors.green, Colors.white,_width),
-        _ButtonNumber("4", Colors.green, Colors.white,_width),
-        _ButtonNumber("5", Colors.green, Colors.white,_width),
-        _ButtonNumber("1", Colors.green, Colors.white,_width),
-        _ButtonNumber("2", Colors.green, Colors.white,_width),
-        _ButtonNumber("3", Colors.green, Colors.white,_width),
-        _ButtonNumber("4", Colors.green, Colors.white,_width),
-        _ButtonNumber("5", Colors.green, Colors.white,_width),
-        _ButtonNumber("1", Colors.green, Colors.white,_width),
-        _ButtonNumber("2", Colors.green, Colors.white,_width),
-        _ButtonNumber("3", Colors.green, Colors.white,_width),
-        _ButtonNumber("4", Colors.green, Colors.white,_width),
-        _ButtonNumber("5", Colors.green, Colors.white,_width),
-        _ButtonNumber("1", Colors.green, Colors.white,_width),
-        _ButtonNumber("2", Colors.green, Colors.white,_width),
-        _ButtonNumber("3", Colors.green, Colors.white,_width),
-        _ButtonNumber("4", Colors.green, Colors.white,_width),
-        _ButtonNumber("5", Colors.green, Colors.white,_width),
-      ],
-    );
-}
- /* Widget _GridViewNumber(){
-    return GridView(
-      padding: const EdgeInsets.symmetric(horizontal: 10,vertical: 5),
-      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-          crossAxisCount: 7,
-          mainAxisSpacing: 10,
-          crossAxisSpacing: ()
+
+  Widget _buttonNumber(context, index, double _width, String number/*,Color colorBackground, Color colorText*/){
+    bool hasBeenPressed= false;
+    return InkWell(
+      onTap: () =>
+        setState(()=>
+          hasBeenPressed = !hasBeenPressed
+        ),
+        child: Container(
+        width: _width*0.072,
+        height: _width*0.072,
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(15),
+          color: hasBeenPressed? Colors.pink: Colors.black,
+        ),
+        child: Center(
+          child: Text(number,
+            style: TextStyle(color: Colors.white, fontSize: _width*0.036),),
+        ),
       ),
-      children: [
-        _ButtonNumber("1", Colors.green, Colors.white),
-        _ButtonNumber("2", Colors.green, Colors.white),
-        _ButtonNumber("3", Colors.green, Colors.white),
-        _ButtonNumber("4", Colors.green, Colors.white),
-        _ButtonNumber("5", Colors.green, Colors.white),
-        _ButtonNumber("1", Colors.green, Colors.white),
-        _ButtonNumber("2", Colors.green, Colors.white),
-        _ButtonNumber("3", Colors.green, Colors.white),
-        _ButtonNumber("4", Colors.green, Colors.white),
-        _ButtonNumber("5", Colors.green, Colors.white),
-        _ButtonNumber("1", Colors.green, Colors.white),
-        _ButtonNumber("2", Colors.green, Colors.white),
-        _ButtonNumber("3", Colors.green, Colors.white),
-        _ButtonNumber("4", Colors.green, Colors.white),
-        _ButtonNumber("5", Colors.green, Colors.white),
-        _ButtonNumber("1", Colors.green, Colors.white),
-        _ButtonNumber("2", Colors.green, Colors.white),
-        _ButtonNumber("3", Colors.green, Colors.white),
-        _ButtonNumber("4", Colors.green, Colors.white),
-        _ButtonNumber("5", Colors.green, Colors.white),
-        _ButtonNumber("1", Colors.green, Colors.white),
-        _ButtonNumber("2", Colors.green, Colors.white),
-        _ButtonNumber("3", Colors.green, Colors.white),
-        _ButtonNumber("4", Colors.green, Colors.white),
-        _ButtonNumber("5", Colors.green, Colors.white),
-        _ButtonNumber("1", Colors.green, Colors.white),
-        _ButtonNumber("2", Colors.green, Colors.white),
-        _ButtonNumber("3", Colors.green, Colors.white),
-        _ButtonNumber("4", Colors.green, Colors.white),
-        _ButtonNumber("5", Colors.green, Colors.white),
-        _ButtonNumber("1", Colors.green, Colors.white),
-        _ButtonNumber("2", Colors.green, Colors.white),
-        _ButtonNumber("3", Colors.green, Colors.white),
-        _ButtonNumber("4", Colors.green, Colors.white),
-        _ButtonNumber("5", Colors.green, Colors.white),
-      ],
     );
-  }*/
+  }
 }
