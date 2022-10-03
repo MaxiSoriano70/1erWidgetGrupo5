@@ -68,7 +68,7 @@ class _BingoCardState extends State<BingoCard> {
     "1","2","3","4","5","6","7",];
 
   //LISTA DE NUMERO CON BINGO
-  List<CustomButton> BingoList=[];
+  List<CustomButton> bingoList=[];
 
   //METODO PARA AGREGAR BINGO
   List<CustomButton> lettersList(List<String> list){
@@ -77,37 +77,37 @@ class _BingoCardState extends State<BingoCard> {
     while( i<40 ){
       if(i == 0){
         var aux = CustomButton("B",const Color(0xff09857d),Colors.white);
-        BingoList.add(aux);
+        bingoList.add(aux);
         i++;
       }
       else if(i == 8){
         var aux = CustomButton("I",const Color(0xff09857d),Colors.white);
-        BingoList.add(aux);
+        bingoList.add(aux);
         i++;
       }
       else if(i == 16){
         var aux = CustomButton("N",const Color(0xff09857d),Colors.white);
-        BingoList.add(aux);
+        bingoList.add(aux);
         i++;
       }
       else if(i == 24){
         var aux = CustomButton("G",const Color(0xff09857d),Colors.white);
-        BingoList.add(aux);
+        bingoList.add(aux);
         i++;
       }
       else if(i == 32){
         var aux = CustomButton("O",const Color(0xff09857d),Colors.white);
-        BingoList.add(aux);
+        bingoList.add(aux);
         i++;
       }
       else{
         var aux = CustomButton(list[position],const Color(0xffada9a6),Colors.black);
-        BingoList.add(aux);
+        bingoList.add(aux);
         i++;
         position++;
       }
     }
-    return BingoList;
+    return bingoList;
   }
 
   void _checkColorButton(CustomButton button){
