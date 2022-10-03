@@ -41,12 +41,12 @@ class CustomButton{
     if(_check==false){
       _check=true;
       _colorBacBackground=const Color(0xffa4243b);
-      _colorText=Colors.black;
+      _colorText=Colors.white;
     }
     else{
       _check=false;
       _colorBacBackground=const Color(0xffada9a6);
-      _colorText=Colors.white;
+      _colorText=Colors.black;
     }
   }
 
@@ -162,7 +162,7 @@ class _BingoCardState extends State<BingoCard> {
         width: width*0.072,
         height: width*0.072,
         decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(15),
+          borderRadius: BorderRadius.circular(10),
           color: button._colorBacBackground,
         ),
         child: Center(
@@ -183,7 +183,7 @@ class _BingoCardState extends State<BingoCard> {
         width: width*0.072,
         height: width*0.072,
         decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(15),
+          borderRadius: BorderRadius.circular(10),
           color: button.colorBacBackground,
         ),
         child: Center(
