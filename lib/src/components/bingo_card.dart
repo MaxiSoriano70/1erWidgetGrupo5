@@ -3,20 +3,20 @@ import 'package:flutter/material.dart';
 class CustomButton{
   String? _valorView;
   bool? _check;
-  Color? _colorBacBackground;
-  Color? _colorText;
+  Color? _backgroundColor;
+  Color? _textColor;
 
-  CustomButton(String valorView, Color colorBacBackground, Color colorText){
-    _valorView=valorView;
-    _check=false;
-    _colorBacBackground=colorBacBackground;
-    _colorText=colorText;
+  CustomButton(String valorView, Color backgroundColor, Color textColor){
+    _valorView = valorView;
+    _check = false;
+    _backgroundColor = backgroundColor;
+    _textColor = textColor;
   }
 
-  Color get colorText => _colorText!;
+  Color get textColor => _textColor!;
 
-  set colorText(Color value) {
-    _colorText = value;
+  set textColor(Color value) {
+    _textColor = value;
   }
 
   String get valorView => _valorView!;
@@ -31,22 +31,22 @@ class CustomButton{
     _check = value;
   }
 
-  Color get colorBacBackground => _colorBacBackground!;
+  Color get backgroundColor => _backgroundColor!;
 
-  set colorBacBackground(Color value) {
-    _colorBacBackground = value;
+  set backgroundColor(Color value) {
+    _backgroundColor = value;
   }
 
   void _bingoCheck(){
-    if(_check==false){
-      _check=true;
-      _colorBacBackground=const Color(0xffa4243b);
-      _colorText=Colors.white;
+    if(_check == false){
+      _check = true;
+      _backgroundColor = const Color(0xffa4243b);
+      _textColor = Colors.black;
     }
     else{
       _check=false;
-      _colorBacBackground=const Color(0xffada9a6);
-      _colorText=Colors.black;
+      _backgroundColor=const Color(0xffada9a6);
+      _textColor=Colors.white;
     }
   }
 
@@ -61,51 +61,53 @@ class BingoCard extends StatefulWidget {
 
 class _BingoCardState extends State<BingoCard> {
   //LISTA DE NUMEROS
-  List<String> listaDeNumeros=["1","2","3","4","5","6","7",
+  List<String> numbersList=["1","2","3","4","5","6","7",
     "9","10","11","12","13","14","15",
     "1","2","3","4","5","6","7",
     "1","2","3","4","5","6","7",
     "1","2","3","4","5","6","7",];
+
   //LISTA DE NUMERO CON BINGO
-  List<CustomButton> listaConBingo=[];
+  List<CustomButton> bingoList=[];
+
   //METODO PARA AGREGAR BINGO
-  List<CustomButton> listaConLetras(List<String> list){
-    int i=0;
-    int posicion=0;
-    while(i<40){
-      if(i==0){
-        var aux=CustomButton("B",const Color(0xff09857d),Colors.white);
-        listaConBingo.add(aux);
+  List<CustomButton> lettersList(List<String> list){
+    int i = 0;
+    int position = 0;
+    while( i<40 ){
+      if(i == 0){
+        var aux = CustomButton("B",const Color(0xff09857d),Colors.white);
+        bingoList.add(aux);
         i++;
       }
-      else if(i==8){
-        var aux=CustomButton("I",const Color(0xff09857d),Colors.white);
-        listaConBingo.add(aux);
+      else if(i == 8){
+        var aux = CustomButton("I",const Color(0xff09857d),Colors.white);
+        bingoList.add(aux);
         i++;
       }
-      else if(i==16){
-        var aux=CustomButton("N",const Color(0xff09857d),Colors.white);
-        listaConBingo.add(aux);
+      else if(i == 16){
+        var aux = CustomButton("N",const Color(0xff09857d),Colors.white);
+        bingoList.add(aux);
         i++;
       }
-      else if(i==24){
-        var aux=CustomButton("G",const Color(0xff09857d),Colors.white);
-        listaConBingo.add(aux);
+      else if(i == 24){
+        var aux = CustomButton("G",const Color(0xff09857d),Colors.white);
+        bingoList.add(aux);
         i++;
       }
-      else if(i==32){
-        var aux=CustomButton("O",const Color(0xff09857d),Colors.white);
-        listaConBingo.add(aux);
+      else if(i == 32){
+        var aux = CustomButton("O",const Color(0xff09857d),Colors.white);
+        bingoList.add(aux);
         i++;
       }
       else{
-        var aux=CustomButton(list[posicion],const Color(0xffada9a6),Colors.black);
-        listaConBingo.add(aux);
+        var aux = CustomButton(list[position],const Color(0xffada9a6),Colors.black);
+        bingoList.add(aux);
         i++;
-        posicion++;
+        position++;
       }
     }
-    return listaConBingo;
+    return bingoList;
   }
 
   void _checkColorButton(CustomButton button){
@@ -131,7 +133,7 @@ class _BingoCardState extends State<BingoCard> {
             ),
             child: GridView.builder(
               padding: EdgeInsets.all(width*0.072/2),
-              itemCount: listaConLetras(listaDeNumeros).length,
+              itemCount: lettersList(numbersList).length,
               physics: const NeverScrollableScrollPhysics(),
               gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                   crossAxisCount: 8,
@@ -139,7 +141,7 @@ class _BingoCardState extends State<BingoCard> {
                   mainAxisSpacing: width*0.072/2
               ),
               itemBuilder: (context, index){
-                return _letterOrNumber(context,index,width,listaConLetras(listaDeNumeros)[index]);
+                return _letterOrNumber(context,index,width,lettersList(numbersList)[index]);
               },
             ),
           ),
@@ -148,25 +150,25 @@ class _BingoCardState extends State<BingoCard> {
 
   Widget _letterOrNumber(context, index,double width, CustomButton button){
     if(index==0 || index==8 || index==16 || index==24 || index==32){
-      return _cardLetter(context, index,width, button);
+      return _letterCard(context, index,width, button);
     }
     else {
       return _buttonNumber(context, index,width, button);
     }
   }
 
-  Widget _cardLetter(context, index, double width, CustomButton button/*, Color colorBackground, Color colorText*/) {
+  Widget _letterCard(context, index, double width, CustomButton button/*, Color colorBackground, Color colorText*/) {
     return InkWell(
       onTap: (){},
       child: Container(
         width: width*0.072,
         height: width*0.072,
         decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(10),
-          color: button._colorBacBackground,
+          borderRadius: BorderRadius.circular(15),
+          color: button._backgroundColor,
         ),
         child: Center(
-          child: Text(button.valorView, style: TextStyle(color: button._colorText,fontWeight: FontWeight.bold, fontSize: width*0.036),),
+          child: Text(button.valorView, style: TextStyle(color: button._textColor,fontWeight: FontWeight.bold, fontSize: width*0.036),),
         ),
       ),
     );
@@ -183,12 +185,12 @@ class _BingoCardState extends State<BingoCard> {
         width: width*0.072,
         height: width*0.072,
         decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(10),
-          color: button.colorBacBackground,
+          borderRadius: BorderRadius.circular(15),
+          color: button._backgroundColor,
         ),
         child: Center(
           child: Text(button.valorView,
-            style: TextStyle(color: button._colorText,fontWeight: FontWeight.bold, fontSize: width*0.036),),
+            style: TextStyle(color: button._textColor,fontWeight: FontWeight.bold, fontSize: width*0.036),),
         ),
       ),
     );
