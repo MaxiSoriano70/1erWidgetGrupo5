@@ -4,11 +4,19 @@ class CustomButton{
   String? _valorView;
   bool? _check;
   Color? _colorBacBackground;
+  Color? _colorText;
 
-  CustomButton(String s, Color c){
-    _valorView=s;
+  CustomButton(String valorView, Color colorBacBackground, Color colorText){
+    _valorView=valorView;
     _check=false;
-    _colorBacBackground=c;
+    _colorBacBackground=colorBacBackground;
+    _colorText=colorText;
+  }
+
+  Color get colorText => _colorText!;
+
+  set colorText(Color value) {
+    _colorText = value;
   }
 
   String get valorView => _valorView!;
@@ -29,14 +37,16 @@ class CustomButton{
     _colorBacBackground = value;
   }
 
-  void Check(){
+  void _bingoCheck(){
     if(_check==false){
       _check=true;
-      _colorBacBackground=Colors.indigo;
+      _colorBacBackground=const Color(0xffa4243b);
+      _colorText=Colors.black;
     }
     else{
       _check=false;
-      _colorBacBackground=Colors.pink;
+      _colorBacBackground=const Color(0xffada9a6);
+      _colorText=Colors.white;
     }
   }
 
@@ -64,32 +74,32 @@ class _BingoCardState extends State<BingoCard> {
     int posicion=0;
     while(i<40){
       if(i==0){
-        var aux=new CustomButton("B",Colors.green);
+        var aux=CustomButton("B",const Color(0xff09857d),Colors.white);
         listaConBingo.add(aux);
         i++;
       }
       else if(i==8){
-        var aux=new CustomButton("I",Colors.green);
+        var aux=CustomButton("I",const Color(0xff09857d),Colors.white);
         listaConBingo.add(aux);
         i++;
       }
       else if(i==16){
-        var aux=new CustomButton("N",Colors.green);
+        var aux=CustomButton("N",const Color(0xff09857d),Colors.white);
         listaConBingo.add(aux);
         i++;
       }
       else if(i==24){
-        var aux=new CustomButton("G",Colors.green);
+        var aux=CustomButton("G",const Color(0xff09857d),Colors.white);
         listaConBingo.add(aux);
         i++;
       }
       else if(i==32){
-        var aux=new CustomButton("O",Colors.green);
+        var aux=CustomButton("O",const Color(0xff09857d),Colors.white);
         listaConBingo.add(aux);
         i++;
       }
       else{
-        var aux=new CustomButton(list[posicion],Colors.pink);
+        var aux=CustomButton(list[posicion],const Color(0xffada9a6),Colors.black);
         listaConBingo.add(aux);
         i++;
         posicion++;
@@ -98,8 +108,8 @@ class _BingoCardState extends State<BingoCard> {
     return listaConBingo;
   }
 
-  void CheckColorButton(CustomButton button){
-    button.Check();
+  void _checkColorButton(CustomButton button){
+    button._bingoCheck();
   }
 
   @override
@@ -107,78 +117,78 @@ class _BingoCardState extends State<BingoCard> {
     return _bingoCard(MediaQuery.of(context).size.width);
   }
 
-  Widget _bingoCard(double _width) {
+  Widget _bingoCard(double width) {
     return Material(
         elevation: 25,
         child: ClipRRect(
           borderRadius: BorderRadius.circular(20),
           child: Container(
-            width: _width,
-            height: _width*0.64,
+            width: width,
+            height: width*0.64,
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(20),
-              color: Colors.grey,
+              color: Colors.white,
             ),
             child: GridView.builder(
-              padding: EdgeInsets.all(_width*0.072/2),
+              padding: EdgeInsets.all(width*0.072/2),
               itemCount: listaConLetras(listaDeNumeros).length,
               physics: const NeverScrollableScrollPhysics(),
               gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                   crossAxisCount: 8,
-                  crossAxisSpacing: (_width*0.072/2),
-                  mainAxisSpacing: _width*0.072/2
+                  crossAxisSpacing: (width*0.072/2),
+                  mainAxisSpacing: width*0.072/2
               ),
               itemBuilder: (context, index){
-                return _LetterOrNumber(context,index,_width,listaConLetras(listaDeNumeros)[index]);
+                return _letterOrNumber(context,index,width,listaConLetras(listaDeNumeros)[index]);
               },
             ),
           ),
         ));
   }
 
-  Widget _LetterOrNumber(context, index,double _width, CustomButton button){
+  Widget _letterOrNumber(context, index,double width, CustomButton button){
     if(index==0 || index==8 || index==16 || index==24 || index==32){
-      return _cardLetter(context, index,_width, button);
+      return _cardLetter(context, index,width, button);
     }
     else {
-      return _buttonNumber(context, index,_width, button);
+      return _buttonNumber(context, index,width, button);
     }
   }
 
-  Widget _cardLetter(context, index, double _width, CustomButton button/*, Color colorBackground, Color colorText*/) {
+  Widget _cardLetter(context, index, double width, CustomButton button/*, Color colorBackground, Color colorText*/) {
     return InkWell(
       onTap: (){},
       child: Container(
-        width: _width*0.072,
-        height: _width*0.072,
+        width: width*0.072,
+        height: width*0.072,
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(15),
           color: button._colorBacBackground,
         ),
         child: Center(
-          child: Text(button.valorView, style: TextStyle(color: Colors.white, fontSize: _width*0.036),),
+          child: Text(button.valorView, style: TextStyle(color: button._colorText,fontWeight: FontWeight.bold, fontSize: width*0.036),),
         ),
       ),
     );
   }
 
-  Widget _buttonNumber(context, index, double _width, CustomButton button/*,Color colorBackground, Color colorText*/){
+  Widget _buttonNumber(context, index, double width, CustomButton button/*,Color colorBackground, Color colorText*/){
     return InkWell(
       onTap: (){
         setState(() {
-          CheckColorButton(button);
+          _checkColorButton(button);
         });
       },
       child: Container(
-        width: _width*0.072,
-        height: _width*0.072,
+        width: width*0.072,
+        height: width*0.072,
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(15),
           color: button.colorBacBackground,
         ),
         child: Center(
           child: Text(button.valorView,
-            style: TextStyle(color: Colors.white, fontSize: _width*0.036),),
+            style: TextStyle(color: button._colorText,fontWeight: FontWeight.bold, fontSize: width*0.036),),
         ),
       ),
     );
