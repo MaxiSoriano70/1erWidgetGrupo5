@@ -12,9 +12,9 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       home: Column(
         children: [
-          Expanded(child: Container(color: Colors.pink,)),
+          Expanded(child: Container(color: Colors.grey,)),
           const BingoCard(),
-          Expanded(child: Container(color: Colors.pink,)),
+          Expanded(child: Container(color: Colors.grey,)),
         ],
       ),
     );
