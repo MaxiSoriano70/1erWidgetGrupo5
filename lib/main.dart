@@ -19,7 +19,11 @@ class MyApp extends StatelessWidget {
           children: [
             Expanded(child: Container(color: Colors.pink,)),
             BingoCard(
-                listWithNumbers: listWithfakeNumbers,),
+                listWithNumbers: listWithfakeNumbers,
+            colorBingo: const Color(0xff09857d),
+            colorCard: Colors.white60,
+            colorNumber: const Color(0xffada9a6),
+            colorNumberPressed: const Color(0xff09857d),),
             Expanded(child: Container(color: Colors.white24,)),
 
           ],
