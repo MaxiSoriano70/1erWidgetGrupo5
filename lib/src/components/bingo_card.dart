@@ -16,40 +16,58 @@ class _BingoCardState extends State<BingoCard> {
     "1","2","3","4","5","6","7",
     "1","2","3","4","5","6","7",];
   //LISTA CON NUMEROS
-  final Map<String,bool> listwithBingo={};
+  List<Map<String,bool>> listwithBingo=[];
   //METODO PARA LLENAR LA LISTA CON BINGO
-  Map<String,bool> listWithLetters(List<String> list){
+  List<Map<String,bool>> listWithLetters(List<String> list){
     int i=0;
     int posicion=0;
     while(i<40){
       if(i==0){
-        listwithBingo['B']=false;
+        var aux={'B' : false};
+        listwithBingo.add(aux);
         i++;
       }
       else if(i==8){
-        listwithBingo['I']=false;
+        var aux={'I' : false};
+        listwithBingo.add(aux);
         i++;
       }
       else if(i==16){
-        listwithBingo['N']=false;
+        var aux={'N' : false};
+        listwithBingo.add(aux);
         i++;
       }
       else if(i==24){
-        listwithBingo['G']=false;
+        var aux={'G' : false};
+        listwithBingo.add(aux);
         i++;
       }
       else if(i==32){
-        listwithBingo['O']=false;
+        var aux={'O' : false};
+        listwithBingo.add(aux);
         i++;
       }
       else{
-        listwithBingo[list[posicion]]=false;
+        var aux={list[posicion] : false};
+        listwithBingo.add(aux);
         i++;
         posicion++;
       }
     }
     return listwithBingo;
   }
+  //METODO PARA ACTUALIZAR
+  void updateState(Map<String,bool> map){
+    var key=map.keys.firstWhere((k) => map[k]==false || true);
+    var aux=map[key];
+    if(aux==true){
+      map.update(key, (value) => false);
+    }
+    else{
+      map.update(key, (value) => true);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return _bingoCard(MediaQuery.of(context).size.width);
@@ -76,23 +94,23 @@ class _BingoCardState extends State<BingoCard> {
                   mainAxisSpacing: _width*0.072/2
               ),
               itemBuilder: (context, index){
-                return _LetterOrNumber(context,index,_width,listWithLetters(listaDeNumeros).keys.firstWhere((k) => listWithLetters(listaDeNumeros)[k]==false));
+                return _LetterOrNumber(context,index,_width,listWithLetters(listaDeNumeros)[index]);
               },
             ),
           ),
         ));
   }
 
-  Widget _LetterOrNumber(context, index,double _width, String m){
+  Widget _LetterOrNumber(context, index,double _width, Map<String,bool> map){
     if(index==0 || index==8 || index==16 || index==24 || index==32){
-      return _cardLetter(context, index,_width,m);
+      return _cardLetter(context, index,_width,map);
     }
     else {
-      return _buttonNumber(context, index,_width,m);
+      return _buttonNumber(context, index,_width,map);
     }
   }
 
-  Widget _cardLetter(context, index, double _width, String letter/*, Color colorBackground, Color colorText*/) {
+  Widget _cardLetter(context, index, double _width, Map<String,bool> map/*, Color colorBackground, Color colorText*/) {
     return InkWell(
       onTap: (){},
       child: Container(
@@ -103,20 +121,21 @@ class _BingoCardState extends State<BingoCard> {
           color: Colors.green,
         ),
         child: Center(
-          child: Text(letter, style: TextStyle(color: Colors.white, fontSize: _width*0.036),),
+          child: Text(map.keys.firstWhere((k) => map[k]==false || true), style: TextStyle(color: Colors.white, fontSize: _width*0.036),),
         ),
       ),
     );
   }
 
-  Widget _buttonNumber(context, index, double _width, String number/*,Color colorBackground, Color colorText*/){
+  Widget _buttonNumber(context, index, double _width, Map<String,bool> map/*,Color colorBackground, Color colorText*/){
     Color colorBacBackground=Colors.pink;
-    bool checkColor=true;
     return InkWell(
       onTap: (){
         setState(() {
-          checkColor=!checkColor;
-          colorBacBackground=checkColor==true?Colors.pink:colorBacBackground=Colors.indigo;
+          updateState(map);
+          var key=map.keys.firstWhere((k) => map[k]==false || true);
+          var aux=map[key];
+          colorBacBackground=aux==false?Colors.pink:colorBacBackground=Colors.indigo;
         });
       },
       child: Container(
@@ -127,7 +146,7 @@ class _BingoCardState extends State<BingoCard> {
           color: colorBacBackground,
         ),
         child: Center(
-          child: Text(number,
+          child: Text(map.keys.firstWhere((k) => map[k]==false || true),
             style: TextStyle(color: Colors.white, fontSize: _width*0.036),),
         ),
       ),
