@@ -76,19 +76,19 @@ class _BingoCardState extends State<BingoCard> {
                   mainAxisSpacing: _width*0.072/2
               ),
               itemBuilder: (context, index){
-                return _LetterOrNumber(context,index,_width,);
+                return _LetterOrNumber(context,index,_width,listWithLetters(listaDeNumeros).keys.firstWhere((k) => listWithLetters(listaDeNumeros)[k]==false));
               },
             ),
           ),
         ));
   }
 
-  Widget _LetterOrNumber(context, index,double _width, String text){
+  Widget _LetterOrNumber(context, index,double _width, String m){
     if(index==0 || index==8 || index==16 || index==24 || index==32){
-      return _cardLetter(context, index,_width,text);
+      return _cardLetter(context, index,_width,m);
     }
     else {
-      return _buttonNumber(context, index,_width,text);
+      return _buttonNumber(context, index,_width,m);
     }
   }
 
