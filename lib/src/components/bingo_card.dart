@@ -16,34 +16,34 @@ class _BingoCardState extends State<BingoCard> {
     "1","2","3","4","5","6","7",
     "1","2","3","4","5","6","7",];
   //LISTA CON NUMEROS
-  List<String> listwithBingo=[];
+  final Map<String,bool> listwithBingo={};
   //METODO PARA LLENAR LA LISTA CON BINGO
-  List<String> listWithLetters(List<String> list){
+  Map<String,bool> listWithLetters(List<String> list){
     int i=0;
     int posicion=0;
     while(i<40){
       if(i==0){
-        listwithBingo.add("B");
+        listwithBingo['B']=false;
         i++;
       }
       else if(i==8){
-        listwithBingo.add("I");
+        listwithBingo['I']=false;
         i++;
       }
       else if(i==16){
-        listwithBingo.add("N");
+        listwithBingo['N']=false;
         i++;
       }
       else if(i==24){
-        listwithBingo.add("G");
+        listwithBingo['G']=false;
         i++;
       }
       else if(i==32){
-        listwithBingo.add("O");
+        listwithBingo['O']=false;
         i++;
       }
       else{
-        listwithBingo.add(list[posicion]);
+        listwithBingo[list[posicion]]=false;
         i++;
         posicion++;
       }
@@ -76,7 +76,7 @@ class _BingoCardState extends State<BingoCard> {
                   mainAxisSpacing: _width*0.072/2
               ),
               itemBuilder: (context, index){
-                return _LetterOrNumber(context,index,_width,listWithLetters(listaDeNumeros)[index]);
+                return _LetterOrNumber(context,index,_width,);
               },
             ),
           ),
