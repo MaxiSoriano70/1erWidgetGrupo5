@@ -3,22 +3,22 @@ import 'package:flutter/material.dart';
 class CustomButton{
   String? _valorView;
   bool? _check;
-  Color? _colorBackgroundcheck;
-  Color? _colorBackground;
-  Color? _colorText;
+  Color? _backgroundPressedColor;
+  Color? _defaultBackgroundColor;
+  Color? _textColor;
 
-  CustomButton(String valorView, Color colorBackground,Color colorBackgroundcheck, Color colorText){
-    _valorView=valorView;
-    _check=false;
-    _colorBackgroundcheck=_colorBackgroundcheck;
-    _colorBackground=colorBackground;
-    _colorText=colorText;
+  CustomButton(String valorView, Color defaultBackgroundColor,Color backgroundPressedColor, Color textColor){
+    _valorView = valorView;
+    _check = false;
+    _backgroundPressedColor = _backgroundPressedColor;
+    _defaultBackgroundColor = defaultBackgroundColor;
+    _textColor = textColor;
   }
 
-  Color get colorText => _colorText!;
+  Color get textColor => _textColor!;
 
-  set colorText(Color value) {
-    _colorText = value;
+  set textColor(Color value) {
+    _textColor = value;
   }
 
   String get valorView => _valorView!;
@@ -33,27 +33,27 @@ class CustomButton{
     _check = value;
   }
 
-  Color get colorBackground => _colorBackground!;
+  Color get defaultBackgroundColor => _defaultBackgroundColor!;
 
-  set colorBackground(Color value) {
-    _colorBackground = value;
+  set defaultBackgroundColor(Color value) {
+    _defaultBackgroundColor = value;
   }
-  Color get colorBackgroundcheck => _colorBackgroundcheck!;
+  Color get backgroundPressedColor => _backgroundPressedColor!;
 
-  set colorBackgroundcheck(Color value) {
-    _colorBackgroundcheck = value;
+  set backgroundPressedColor(Color value) {
+    _backgroundPressedColor = value;
   }
 
-  void _bingoCheck(Color colorBackground, Color colorBackgroundcheck){
+  void _bingoCheck(Color defaultBackgroundColor, Color backgroundPressedColor){
     if(_check==false){
-      _check=true;
-      _colorBackground=colorBackgroundcheck;
-      _colorText=Colors.white;
+      _check = true;
+      _defaultBackgroundColor = backgroundPressedColor;
+      _textColor = Colors.white;
     }
     else{
-      _check=false;
-      _colorBackground=colorBackground;
-      _colorText=Colors.black;
+      _check = false;
+      _defaultBackgroundColor = defaultBackgroundColor;
+      _textColor = Colors.black;
     }
   }
 
@@ -61,12 +61,12 @@ class CustomButton{
 
 class BingoCard extends StatefulWidget {
   const BingoCard( {Key? key,
-    required this.listWithNumbers,
+    required this.numbersList,
     this.colorBingo= Colors.teal,
     this.colorNumber = Colors.grey,
     this.colorNumberPressed= Colors.red,
     this.colorCard= Colors.white}) : super(key: key);
-  final List<String> listWithNumbers;
+  final List<String> numbersList;
   final Color colorBingo;
   final Color colorNumber;
   final Color colorNumberPressed;
@@ -76,10 +76,10 @@ class BingoCard extends StatefulWidget {
 }
 
 class _BingoCardState extends State<BingoCard> {
-  //LISTA DE NUMERO CON BINGO
+
   List<CustomButton> listWithBingo=[];
-  //METODO PARA AGREGAR BINGO
-  List<CustomButton> listWithLetters(List<String> list){
+
+  List<CustomButton> numbersList(List<String> list){
     int i=0;
     int position=0;
     while(i<40){
@@ -124,10 +124,10 @@ class _BingoCardState extends State<BingoCard> {
 
   @override
   Widget build(BuildContext context) {
-    return _bingoCard(MediaQuery.of(context).size.width, widget.listWithNumbers);
+    return _bingoCard(MediaQuery.of(context).size.width, widget.numbersList);
   }
 
-  Widget _bingoCard(double width, List<String> listWithNumbers) {
+  Widget _bingoCard(double width, List<String> dummyNumbers) {
     return Material(
         elevation: 25,
         child: ClipRRect(
@@ -141,7 +141,7 @@ class _BingoCardState extends State<BingoCard> {
             ),
             child: GridView.builder(
               padding: EdgeInsets.all(width*0.072/2),
-              itemCount: listWithLetters(listWithNumbers).length,
+              itemCount: numbersList(dummyNumbers).length,
               physics: const NeverScrollableScrollPhysics(),
               gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                   crossAxisCount: 8,
@@ -149,7 +149,7 @@ class _BingoCardState extends State<BingoCard> {
                   mainAxisSpacing: width*0.072/2
               ),
               itemBuilder: (context, index){
-                return _letterOrNumber(context,index,width,listWithLetters(listWithNumbers)[index]);
+                return _letterOrNumber(context,index,width,numbersList(dummyNumbers)[index]);
               },
             ),
           ),
@@ -173,10 +173,11 @@ class _BingoCardState extends State<BingoCard> {
         height: width*0.072,
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(10),
-          color: button._colorBackground,
+          color: button._defaultBackgroundColor,
         ),
         child: Center(
-          child: Text(button.valorView, style: TextStyle(color: button._colorText,fontWeight: FontWeight.bold, fontSize: width*0.036),),
+          child: Text( button.valorView, style:
+            TextStyle(color: button._textColor,fontWeight: FontWeight.bold, fontSize: width*0.036),),
         ),
       ),
     );
@@ -194,11 +195,11 @@ class _BingoCardState extends State<BingoCard> {
         height: width*0.072,
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(10),
-          color: button._colorBackground,
+          color: button._defaultBackgroundColor,
         ),
         child: Center(
           child: Text(button.valorView,
-            style: TextStyle(color: button._colorText,fontWeight: FontWeight.bold, fontSize: width*0.036),),
+            style: TextStyle(color: button._textColor,fontWeight: FontWeight.bold, fontSize: width*0.036),),
         ),
       ),
     );
