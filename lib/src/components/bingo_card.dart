@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 
 class CustomButton{
-  int? _number;
+  String? _number;
   bool? _itsPressed;
   Color? _defaultBackgroundColor;
   Color? _pressedBackgroundColor;
   Color? _textColor;
 
-  CustomButton(int number, Color defaultBackgroundColor, Color pressedBackgroundColor, Color textColor){
+  CustomButton(String number, Color defaultBackgroundColor, Color pressedBackgroundColor, Color textColor){
     _number = number;
     _itsPressed = false;
     _defaultBackgroundColor = defaultBackgroundColor;
@@ -15,8 +15,8 @@ class CustomButton{
     _textColor = textColor;
   }
 
-  int get number => _number!;
-  set number(int number){
+  String get number => _number!;
+  set number(String number){
     _number = number;
   }
 
@@ -61,26 +61,86 @@ class BingoCard extends StatefulWidget {
   final Color textColor;
   final Color cardColor;
 
-  const BingoCard({
+  BingoCard({
     Key? key,
     required this.numbersList,
     this.letterCardColor = Colors.green,
     this.defaultBgNumberColor = Colors.grey,
     this.pressedBgNumberColor = Colors.red,
     this.textColor = Colors.black,
-    this.cardColor = Colors.white
+    this.cardColor = Colors.white,
   }) : super(key: key);
 
+  List<CustomButton> customButtonList=[];
+
+  List<CustomButton> listBuilder(){
+    for(int i=0;i<35;i++){
+      if(i>numbersList.length){
+        var aux = CustomButton("-",defaultBgNumberColor,pressedBgNumberColor,Colors.black);
+        customButtonList.add(aux);
+      }
+      else{
+        var aux = CustomButton(numbersList[i].toString(),defaultBgNumberColor,pressedBgNumberColor,Colors.black);
+        customButtonList.add(aux);
+      }
+    }
+    return customButtonList;
+  }
   @override
   State<BingoCard> createState() => _BingoCardState();
 }
 
 
 class _BingoCardState extends State<BingoCard> {
+  void _checkColorButton(CustomButton button){
+    button._hasBeenPressed(widget.defaultBgNumberColor,widget.pressedBgNumberColor);
+  }
 
   @override
   Widget build(BuildContext context) {
     return _bingoCard(MediaQuery.of(context).size.width, widget.numbersList);
+  }
+
+  Widget _bingoCard(double width, List<int> numbers) {
+    double padding = width*0.72/2;
+    print(padding);
+    return Material(
+      elevation: 25,
+      color: Colors.transparent,
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(20),
+        child: Container(
+          padding: const EdgeInsets.all(10),
+          width: width,
+          height: width * 0.64,
+          decoration: BoxDecoration(borderRadius: BorderRadius.circular(20), color: widget.cardColor,),
+          child: Row (children: [
+            Container(width: width * 0.084, height: width * 0.64, color: Colors.pink,
+              child: _wordBingo(width),),
+            Container(width: width * 0.035, height: width * 0.64, color: Colors.black,),
+            Container(width: width * 0.808, height: width * 0.64, color: Colors.red,
+              child: _gridViewNumbers(width, widget.customButtonList),)
+          ],),
+        ),
+      ),
+    );
+  }
+
+  Widget _wordBingo(double width){
+    List <String> word = ["B", "I", "N", "G", "0"];
+    return GridView.builder(
+      padding: const EdgeInsets.symmetric(horizontal: 0, vertical: 0),
+      itemCount: word.length,
+      physics: const NeverScrollableScrollPhysics(),
+      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+          crossAxisCount: 1,
+          crossAxisSpacing: (width*0.072/2),
+          mainAxisSpacing: width*0.072/2
+      ),
+      itemBuilder: (context, index){
+        return _letterCard(width, word[index]);
+      },
+    );
   }
 
   Widget _letterCard(double width, String text){
@@ -97,44 +157,10 @@ class _BingoCardState extends State<BingoCard> {
     );
   }
 
-  Widget _wordBingo(double width){
-    List <String> word = ["B", "I", "N", "G", "0"];
-
+  Widget _gridViewNumbers(double width, List<CustomButton> customButtonList){
     return GridView.builder(
       padding: const EdgeInsets.symmetric(horizontal: 0, vertical: 0),
-      itemCount: word.length,
-      physics: const NeverScrollableScrollPhysics(),
-      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-          crossAxisCount: 1,
-          crossAxisSpacing: (width*0.072/2),
-          mainAxisSpacing: width*0.072/2
-      ),
-      itemBuilder: (context, index){
-        return _letterCard(width, word[index]);
-      },
-    );
-  }
-
-  Widget _cardNumber(double width){
-    return InkWell(
-      child: Container(
-        width: width*0.072,
-        height: width*0.072,
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(10),
-          color: widget.defaultBgNumberColor,),
-        child: Center(
-          child: Text("11",
-            style: TextStyle(color: widget.textColor, fontWeight: FontWeight.bold, fontSize: width*0.036),),
-        ),
-      ),
-    );
-  }
-
-  Widget _gridViewNumbers(double width, List<int> numbers){
-    return GridView.builder(
-      padding: const EdgeInsets.symmetric(horizontal: 0, vertical: 0),
-      itemCount: numbers.length,
+      itemCount: customButtonList.length,
       physics: const NeverScrollableScrollPhysics(),
       gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
           crossAxisCount: 7,
@@ -142,32 +168,27 @@ class _BingoCardState extends State<BingoCard> {
           mainAxisSpacing: width*0.072/2
       ),
       itemBuilder: (context, index){
-        return _cardNumber(width);
+        return _cardNumber(customButtonList[index],width);
       },
     );
   }
 
-  Widget _bingoCard(double width, List<int> numbers) {
-    double padding = width*0.72/2;
-    print(padding);
-
-    return Material(
-      elevation: 25,
-      color: Colors.transparent,
-      child: ClipRRect(
-        borderRadius: BorderRadius.circular(20),
-        child: Container(
-          padding: const EdgeInsets.all(10),
-          width: width,
-          height: width * 0.64,
-          decoration: BoxDecoration(borderRadius: BorderRadius.circular(20), color: widget.cardColor,),
-          child: Row (children: [
-            Container(width: width * 0.084, height: width * 0.64, color: Colors.pink,
-              child: _wordBingo(width),),
-            Container(width: width * 0.035, height: width * 0.64, color: Colors.black,),
-            Container(width: width * 0.808, height: width * 0.64, color: Colors.red,
-              child: _gridViewNumbers(width, numbers),)
-          ],),
+  Widget _cardNumber(CustomButton button,double width){
+    return InkWell(
+      onTap: (){
+        setState(() {
+          _checkColorButton(button);
+        });
+      },
+      child: Container(
+        width: width*0.072,
+        height: width*0.072,
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(10),
+          color: button._defaultBackgroundColor,),
+        child: Center(
+          child: Text(button._number.toString(),
+            style: TextStyle(color: button._textColor, fontWeight: FontWeight.bold, fontSize: width*0.036),),
         ),
       ),
     );
