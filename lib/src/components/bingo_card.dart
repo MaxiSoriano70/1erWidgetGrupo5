@@ -40,7 +40,7 @@ class CustomButton{
     _textColor = color;
   }
 
-  /*void _hasBeenPressed(Color defaultBackgroundColor, Color pressedBackgroundColor){
+  void _hasBeenPressed(Color defaultBackgroundColor, Color pressedBackgroundColor){
     if (_itsPressed == false){
       _itsPressed = true;
       _defaultBackgroundColor = pressedBackgroundColor;
@@ -50,7 +50,7 @@ class CustomButton{
       _defaultBackgroundColor = defaultBackgroundColor;
       _textColor = Colors.black;
     }
-  }*/
+  }
 }
 
 class BingoCard extends StatefulWidget {
@@ -98,17 +98,20 @@ class _BingoCardState extends State<BingoCard> {
   }
 
   Widget _wordBingo(double width){
-    return GridView.count(
-      crossAxisCount: 1,
-      crossAxisSpacing: (width*0.072/2),
-      mainAxisSpacing: width*0.072/2,
-      children: [
-        _letterCard(width, "B"),
-        _letterCard(width, "I"),
-        _letterCard(width, "N"),
-        _letterCard(width, "G"),
-        _letterCard(width, "O"),
-      ],
+    List <String> word = ["B", "I", "N", "G", "0"];
+
+    return GridView.builder(
+      padding: const EdgeInsets.symmetric(horizontal: 0, vertical: 0),
+      itemCount: word.length,
+      physics: const NeverScrollableScrollPhysics(),
+      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+          crossAxisCount: 1,
+          crossAxisSpacing: (width*0.072/2),
+          mainAxisSpacing: width*0.072/2
+      ),
+      itemBuilder: (context, index){
+        return _letterCard(width, word[index]);
+      },
     );
   }
 
@@ -130,6 +133,7 @@ class _BingoCardState extends State<BingoCard> {
 
   Widget _gridViewNumbers(double width, List<int> numbers){
     return GridView.builder(
+      padding: const EdgeInsets.symmetric(horizontal: 0, vertical: 0),
       itemCount: numbers.length,
       physics: const NeverScrollableScrollPhysics(),
       gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
@@ -144,25 +148,26 @@ class _BingoCardState extends State<BingoCard> {
   }
 
   Widget _bingoCard(double width, List<int> numbers) {
+    double padding = width*0.72/2;
+    print(padding);
+
     return Material(
       elevation: 25,
       color: Colors.transparent,
       child: ClipRRect(
         borderRadius: BorderRadius.circular(20),
         child: Container(
+          padding: const EdgeInsets.all(10),
           width: width,
           height: width * 0.64,
           decoration: BoxDecoration(borderRadius: BorderRadius.circular(20), color: widget.cardColor,),
-          child: Padding(
-            padding: EdgeInsets.all(width*0.072/2),
-            child: Row (children: [
-              Container(width: width * 0.084, height: width * 0.64 - width*0.072/2, color: Colors.transparent,
-                child: _wordBingo(width),),
-              Container(width: width * 0.035, height: width * 0.64, color: Colors.transparent,),
-              Container(width: width * 0.808, height: width * 0.64, color: Colors.transparent,
-                child: _gridViewNumbers(width, numbers),)
-            ],),
-          ),
+          child: Row (children: [
+            Container(width: width * 0.084, height: width * 0.64, color: Colors.pink,
+              child: _wordBingo(width),),
+            Container(width: width * 0.035, height: width * 0.64, color: Colors.black,),
+            Container(width: width * 0.808, height: width * 0.64, color: Colors.red,
+              child: _gridViewNumbers(width, numbers),)
+          ],),
         ),
       ),
     );

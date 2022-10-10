@@ -7,27 +7,14 @@ void main() {
 
 class MyApp extends StatelessWidget {
   MyApp({Key? key}) : super(key: key);
-  final List<String> dummyNumbers=["1"," 2","3","4","5","6","7",
-    "9","10","11","12","13","14","15",
-    "1","2","3","4","5","6","7",
-    "1","2","3","4","5","6","7",
-    "1","2","3","4","5","6","7",];
+
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-        home: Column(
-          children: [
-            Expanded(child: Container(color: Colors.white24,)),
-            BingoCard(
-              numbersList: dummyNumbers,
-              colorBingo: const Color(0xff09857d),
-              colorCard: Colors.black,
-              colorNumber: const Color(0xffada9a6),
-              colorNumberPressed: const Color(0xffa4243b),),
-            Expanded(child: Container(color: Colors.white24,)),
-
-          ],
-        )
+    return const MaterialApp(
+      home: Center(child: BingoCard(
+        numbersList: [1,2,3,4,5,6,7,8,9,10,11,12,
+          13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,
+          31,32,33,35,36],) ,),
     );
   }
 }
