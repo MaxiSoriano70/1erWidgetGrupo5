@@ -66,7 +66,7 @@ class BingoCard extends StatefulWidget {
     this.colorNumber = Colors.grey,
 this.colorNumberPressed= Colors.red,
     this.colorCard= Colors.white}) : super(key: key);
- final List<String> listWithNumbers;
+ final List<int> listWithNumbers;
  final Color colorBingo;
  final Color colorNumber;
  final Color colorNumberPressed;
@@ -76,47 +76,6 @@ this.colorNumberPressed= Colors.red,
 }
 
 class _BingoCardState extends State<BingoCard> {
-  //LISTA DE NUMERO CON BINGO
-  List<CustomButton> listWithBingo=[];
-  //METODO PARA AGREGAR BINGO
-  List<CustomButton> listWithLetters(List<String> list){
-    int i=0;
-    int position=0;
-    while(i<40){
-      if(i==0){
-        var aux=CustomButton("B",widget.colorBingo,widget.colorBingo,Colors.white);
-        listWithBingo.add(aux);
-        i++;
-      }
-      else if(i==8){
-        var aux=CustomButton("I",widget.colorBingo,widget.colorBingo,Colors.white);
-        listWithBingo.add(aux);
-        i++;
-      }
-      else if(i==16){
-        var aux=CustomButton("N",widget.colorBingo,widget.colorBingo,Colors.white);
-        listWithBingo.add(aux);
-        i++;
-      }
-      else if(i==24){
-        var aux=CustomButton("G",widget.colorBingo,widget.colorBingo,Colors.white);
-        listWithBingo.add(aux);
-        i++;
-      }
-      else if(i==32){
-        var aux=CustomButton("O",widget.colorBingo,widget.colorBingo,Colors.white);
-        listWithBingo.add(aux);
-        i++;
-      }
-      else{
-        var aux=CustomButton(list[position],widget.colorNumber,widget.colorNumberPressed,Colors.black);
-        listWithBingo.add(aux);
-        i++;
-        position++;
-      }
-    }
-    return listWithBingo;
-  }
 
   void _checkColorButton(CustomButton button){
     button._bingoCheck(widget.colorNumber,widget.colorNumberPressed);
@@ -127,42 +86,55 @@ class _BingoCardState extends State<BingoCard> {
     return _bingoCard(MediaQuery.of(context).size.width, widget.listWithNumbers);
   }
 
-  Widget _bingoCard(double width, List<String> listWithNumbers) {
+  Widget _bingoCard(double width, List<int> listWithNumbers) {
     return Material(
         elevation: 25,
         child: ClipRRect(
           borderRadius: BorderRadius.circular(20),
-          child: Container(
-            width: width,
-            height: width*0.64,
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(20),
-              color: widget.colorCard,
-            ),
-            child: GridView.builder(
-              padding: EdgeInsets.all(width*0.072/2),
-              itemCount: listWithLetters(listWithNumbers).length,
-              physics: const NeverScrollableScrollPhysics(),
-              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 8,
-                  crossAxisSpacing: (width*0.072/2),
-                  mainAxisSpacing: width*0.072/2
+          child: Row(
+            children: [
+              Container(
+                width: width*1.44,
+                height: width*0.64,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(20),
+                  color: widget.colorCard,
+                ),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                 children: [
+                   _buttonNumber(width,CustomButton("B",widget.colorBingo,widget.colorBingo,Colors.white)),
+                   _buttonNumber(width,CustomButton("I",widget.colorBingo,widget.colorBingo,Colors.white)),
+                   _buttonNumber(width,CustomButton("N",widget.colorBingo,widget.colorBingo,Colors.white)),
+                   _buttonNumber(width,CustomButton("G",widget.colorBingo,widget.colorBingo,Colors.white)),
+                   _buttonNumber(width,CustomButton("O",widget.colorBingo,widget.colorBingo,Colors.white)),
+                 ],
+                ),
               ),
-              itemBuilder: (context, index){
-                return _letterOrNumber(context,index,width,listWithLetters(listWithNumbers)[index]);
-              },
-            ),
+              Container(
+                width: width-width*1.44,
+                height: width*0.64,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(20),
+                  color: widget.colorCard,
+                ),
+                child: GridView.builder(
+                  padding: EdgeInsets.all(width*0.072/2),
+                  itemCount:listWithNumbers.length,
+                  physics: const NeverScrollableScrollPhysics(),
+                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: 8,
+                      crossAxisSpacing: (width*0.072/2),
+                      mainAxisSpacing: width*0.072/2
+                  ),
+                  itemBuilder: (context, index){
+                    return _buttonNumber(CustomButton(listWithNumbers[index].toString(),widget.colorNumber,widget.colorNumberPressed,Colors.black),width);
+                  },
+                ),
+              ),
+            ],
           ),
         ));
-  }
-
-  Widget _letterOrNumber(context, index,double width, CustomButton button){
-    if(index==0 || index%8==0){
-      return _cardLetter(context, index,width, button);
-    }
-    else {
-      return _buttonNumber(context, index,width, button);
-    }
   }
 
   Widget _cardLetter(context, index, double width, CustomButton button) {
@@ -182,7 +154,7 @@ class _BingoCardState extends State<BingoCard> {
     );
   }
 
-  Widget _buttonNumber(context, index, double width, CustomButton button){
+  Widget _buttonNumber( double width, CustomButton button){
     return InkWell(
       onTap: (){
         setState(() {

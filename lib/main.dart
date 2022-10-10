@@ -7,11 +7,11 @@ void main() {
 
 class MyApp extends StatelessWidget {
  MyApp({Key? key}) : super(key: key);
-  final List<String> listWithfakeNumbers=["1"," 2","3","4","5","6","7",
-    "9","10","11","12","13","14","15",
-    "1","2","3","4","5","6","7",
-    "1","2","3","4","5","6","7",
-    "1","2","3","4","5","6","7",];
+  final List<int> listWithfakeNumbers=[1, 2,3,4,5,6,7,
+    9,10,11,12,13,14,15,
+    1,2,3,4,5,6,7,
+    1,2,3,4,5,6,7,
+    1,2,3,4,5,6,7,];
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
