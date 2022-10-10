@@ -71,31 +71,33 @@ class BingoCard extends StatefulWidget {
     this.cardColor = Colors.white,
   }) : super(key: key);
 
-  List<CustomButton> customButtonList=[];
 
-  List<CustomButton> listBuilder(){
-    for(int i=0;i<35;i++){
-      if(i>numbersList.length){
-        var aux = CustomButton("-",defaultBgNumberColor,pressedBgNumberColor,Colors.black);
-        customButtonList.add(aux);
-      }
-      else{
-        var aux = CustomButton(numbersList[i].toString(),defaultBgNumberColor,pressedBgNumberColor,Colors.black);
-        customButtonList.add(aux);
-      }
-    }
-    return customButtonList;
-  }
   @override
   State<BingoCard> createState() => _BingoCardState();
 }
 
 
 class _BingoCardState extends State<BingoCard> {
+  List<CustomButton> customButtonList=[];
+  List<CustomButton> listBuilder(){
+    for(int i=0;i<35;i++){
+      if(i>widget.numbersList.length){
+        var aux = CustomButton("-",widget.defaultBgNumberColor,widget.pressedBgNumberColor,Colors.black);
+        customButtonList.add(aux);
+      }
+      else{
+        var aux = CustomButton(widget.numbersList[i].toString(),widget.defaultBgNumberColor,widget.pressedBgNumberColor,Colors.black);
+        customButtonList.add(aux);
+      }
+    }
+    return customButtonList;
+  }
+
+
+
   void _checkColorButton(CustomButton button){
     button._hasBeenPressed(widget.defaultBgNumberColor,widget.pressedBgNumberColor);
   }
-
   @override
   Widget build(BuildContext context) {
     return _bingoCard(MediaQuery.of(context).size.width, widget.numbersList);
@@ -103,7 +105,7 @@ class _BingoCardState extends State<BingoCard> {
 
   Widget _bingoCard(double width, List<int> numbers) {
     double padding = width*0.72/2;
-    print(padding);
+    //print(listBuilder());
     return Material(
       elevation: 25,
       color: Colors.transparent,
@@ -119,7 +121,7 @@ class _BingoCardState extends State<BingoCard> {
               child: _wordBingo(width),),
             Container(width: width * 0.035, height: width * 0.64, color: Colors.black,),
             Container(width: width * 0.808, height: width * 0.64, color: Colors.red,
-              child: _gridViewNumbers(width, widget.customButtonList),)
+              child: _gridViewNumbers(width, listBuilder()),)
           ],),
         ),
       ),
@@ -159,6 +161,7 @@ class _BingoCardState extends State<BingoCard> {
 
   Widget _gridViewNumbers(double width, List<CustomButton> customButtonList){
     return GridView.builder(
+      scrollDirection: Axis.vertical,
       padding: const EdgeInsets.symmetric(horizontal: 0, vertical: 0),
       itemCount: customButtonList.length,
       physics: const NeverScrollableScrollPhysics(),
