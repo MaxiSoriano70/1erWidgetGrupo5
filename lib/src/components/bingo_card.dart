@@ -106,15 +106,13 @@ class _BingoCardState extends State<BingoCard> {
   }
 
   Widget _bingoCard(double width, List<CustomButton> customButtonList) {
-    //double padding = width*0.72/2;
-    //print(padding);
     return Material(
       elevation: 25,
       color: Colors.transparent,
       child: ClipRRect(
         borderRadius: BorderRadius.circular(20),
         child: Container(
-          padding: const EdgeInsets.all(10),
+          padding: EdgeInsets.all(width*0.072/2),
           width: width,
           height: width * 0.64,
           decoration: BoxDecoration(borderRadius: BorderRadius.circular(20), color: widget.cardColor,),
