@@ -55,14 +55,13 @@ class CustomButton{
 
 class BingoCard extends StatefulWidget {
   final List<int> numbersList;
-  late List<CustomButton> customButtonList=[];
   final Color letterCardColor;
   final Color defaultBgNumberColor;
   final Color pressedBgNumberColor;
   final Color textColor;
   final Color cardColor;
 
-  BingoCard({
+  const BingoCard({
     Key? key,
     required this.numbersList,
     this.letterCardColor = const Color(0xff09857d),
@@ -72,15 +71,15 @@ class BingoCard extends StatefulWidget {
     this.cardColor = Colors.white
   }) : super(key: key);
 
-  void listBuilder(){
+  void listBuilder(List<CustomButton> list){
     for(int i=0;i<35;i++){
       if(i>=numbersList.length){
         var aux = CustomButton("-",defaultBgNumberColor,pressedBgNumberColor,Colors.black);
-        customButtonList.add(aux);
+        list.add(aux);
       }
       else{
         var aux = CustomButton(numbersList[i].toString(),defaultBgNumberColor,pressedBgNumberColor,Colors.black);
-        customButtonList.add(aux);
+        list.add(aux);
       }
     }
   }
@@ -91,18 +90,23 @@ class BingoCard extends StatefulWidget {
 
 
 class _BingoCardState extends State<BingoCard> {
+  List<CustomButton> customButtonList=[];
+
   @override
+  // ignore: must_call_super
   void initState() {
-    widget.listBuilder();
+    widget.listBuilder(customButtonList);
   }
 
   void _checkColorButton(CustomButton button){
-    button._hasBeenPressed(widget.defaultBgNumberColor,widget.pressedBgNumberColor);
+    if(button._number!="-"){
+      button._hasBeenPressed(widget.defaultBgNumberColor,widget.pressedBgNumberColor);
+    }
   }
 
   @override
   Widget build(BuildContext context) {
-    return _bingoCard(MediaQuery.of(context).size.width, widget.customButtonList);
+    return _bingoCard(MediaQuery.of(context).size.width, customButtonList);
   }
 
   Widget _bingoCard(double width, List<CustomButton> customButtonList) {
