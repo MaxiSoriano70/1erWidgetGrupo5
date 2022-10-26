@@ -60,8 +60,16 @@ class BingoCard extends StatefulWidget {
   final Color pressedBgNumberColor;
   final Color textColor;
   final Color cardColor;
-
+  ///----INFO----
+  ///
+  /// Equipo: Chaile, Micaela ; Marín, Sofía ; Soriano, Maximiliano
+  ///
+  /// Este widget consiste en un cartón de bingo, está diseñado para recibir una lista de hasta 35 números,
+  /// en caso de recibir una cantidad menor, los casilleros serán autocompletados mediante guiones.
+  ///
+  /// Todos los colores de los elementos se encuentran establecidos por defecto, pueden ser cambiados.
   const BingoCard({
+
     Key? key,
     required this.numbersList,
     this.letterCardColor = const Color(0xff09857d),
@@ -106,10 +114,11 @@ class _BingoCardState extends State<BingoCard> {
 
   @override
   Widget build(BuildContext context) {
-    return _bingoCard(MediaQuery.of(context).size.width, customButtonList);
+    return _bingoCard(customButtonList);
   }
 
-  Widget _bingoCard(double width, List<CustomButton> customButtonList) {
+  Widget _bingoCard( List<CustomButton> customButtonList) {
+    double width= MediaQuery.of(context).size.width;
     return Material(
       elevation: 25,
       color: Colors.transparent,
